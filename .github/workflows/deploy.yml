@@ -19,7 +19,9 @@ jobs:
     - name: Copy HTML projects
       run: |
         for dir in $(ls -d */ | grep -v '^\.'); do
-          cp -r $dir public/
+          if [ "$dir" != "public/" ]; then
+            cp -r $dir public/
+          fi
         done
 
     - name: Deploy to GitHub Pages
