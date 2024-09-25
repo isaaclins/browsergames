@@ -13,19 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+    - name: Create public directory
+      run: mkdir public
 
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build project
-      run: npm run build  # Adjust this if you have a specific build script
+    - name: Copy HTML projects
+      run: |
+        for dir in $(ls -d */ | grep -v '^\.'); do
+          cp -r $dir public/
+        done
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # Adjust this if your build output is in a different directory
+        publish_dir: ./public
