@@ -10,10 +10,30 @@
             display: block;
             margin: 0 auto;
         }
+        #score, #highScore {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        .difficulty-buttons {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .difficulty-buttons button {
+            font-size: 18px;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="score">Score: 0</div>
+    <div id="highScore">High Score: 0</div>
+    <div class="difficulty-buttons">
+        <button id="easy">Easy</button>
+        <button id="normal">Normal</button>
+        <button id="hard">Hard</button>
+    </div>
+    <canvas id="gameCanvas" width="800" height="800"></canvas>
     <script src="index.js"></script>
 </body>
 </html>

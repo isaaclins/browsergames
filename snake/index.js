@@ -1,5 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const scoreElement = document.getElementById('score');
+const highScoreElement = document.getElementById('highScore');
 
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
@@ -7,6 +9,10 @@ const tileCount = canvas.width / gridSize;
 let snake = [{ x: 10, y: 10 }];
 let direction = { x: 0, y: 0 };
 let food = { x: 15, y: 15 };
+let score = 0;
+let highScore = 0;
+let gameSpeed = 100;
+let gameInterval;
 
 function gameLoop() {
     update();
@@ -21,6 +27,14 @@ function update() {
             x: Math.floor(Math.random() * tileCount),
             y: Math.floor(Math.random() * tileCount)
         };
+        score++;
+        scoreElement.textContent = `Score: ${score}`;
+
+        // Update high score if current score is higher
+        if (score > highScore) {
+            highScore = score;
+            highScoreElement.textContent = `High Score: ${highScore}`;
+        }
     } else {
         snake.pop();
     }
@@ -57,23 +71,43 @@ function resetGame() {
     snake = [{ x: 10, y: 10 }];
     direction = { x: 0, y: 0 };
     food = { x: 15, y: 15 };
+    score = 0;
+    scoreElement.textContent = `Score: ${score}`;
 }
+
+function setGameSpeed(speed) {
+    clearInterval(gameInterval);
+    gameSpeed = speed;
+    gameInterval = setInterval(gameLoop, gameSpeed);
+}
+
+document.getElementById('easy').addEventListener('click', () => setGameSpeed(150));
+document.getElementById('normal').addEventListener('click', () => setGameSpeed(100));
+document.getElementById('hard').addEventListener('click', () => setGameSpeed(50));
 
 window.addEventListener('keydown', e => {
     switch (e.key) {
         case 'ArrowUp':
+        case 'w':
+        case 'W':
             if (direction.y === 0) direction = { x: 0, y: -1 };
             break;
         case 'ArrowDown':
+        case 's':
+        case 'S':
             if (direction.y === 0) direction = { x: 0, y: 1 };
             break;
         case 'ArrowLeft':
+        case 'a':
+        case 'A':
             if (direction.x === 0) direction = { x: -1, y: 0 };
             break;
         case 'ArrowRight':
+        case 'd':
+        case 'D':
             if (direction.x === 0) direction = { x: 1, y: 0 };
             break;
     }
 });
 
-setInterval(gameLoop, 100);
+setGameSpeed(gameSpeed);
